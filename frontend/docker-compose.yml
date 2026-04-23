@@ -1,0 +1,56 @@
+services:
+
+  frontend:
+    build: ./frontend
+    working_dir: /app
+    volumes:
+      - ./React_app_part:/app
+      - /app/node_modules
+    ports:
+      - "8081:8081"
+    command: npm run start
+    depends_on:
+      - backend
+
+
+
+  backend:
+    build: ./backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      HOST: db
+      DB_PASSWORD: Cpvupvu123!
+      DB_NAME: milka_yoda_etc
+      DB_PORT: 3306
+      DB_USER: boutoutben
+      MONGO_URL: mongodb://mongo:27017/milka_yoda_etc
+      JWT_SECRET : 69971b85b411700c9dd371d4e188224cae735d00c58f728f7687386e89b6f15cd745c38eb369d6642f6e28878a23471a44d8e33b38c8421f815c9e8cdb0952f7
+      GMAIL_SERVICE_PASSWORD : bjlr alcd jbev hxpn
+      CLIENT_APP_PART: /frontend_articles
+    command: npm run start:dev
+    depends_on:
+      - db
+
+
+
+  db:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: milka_yoda_etc
+      MYSQL_USER: boutoutben
+      MYSQL_PASSWORD: Cpvupvu123!
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
