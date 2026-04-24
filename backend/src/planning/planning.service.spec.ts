@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AchevementService } from './achevement.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Achevement } from './achevement.entity';
+import { PlanningService } from './planning.service';
+import { Planning } from './planning.entity';
 
 
-describe('AchevementService', () => {
+
+describe('PlanningService', () => {
 let mockRepo;
 
 beforeEach(async () => {
@@ -16,9 +17,9 @@ beforeEach(async () => {
     findOne: jest.fn(),
     find: jest.fn().mockResolvedValue([
       {
-        achevement_id: 1,
-        achevement_name: 'Test bbb',
-        achevement_date: new Date(),
+        planning_id: 1,
+        planning_name: 'Test bbb',
+        planning_date: new Date(),
       },
     ]),
     delete: jest.fn(),
@@ -26,41 +27,41 @@ beforeEach(async () => {
 
   const module: TestingModule = await Test.createTestingModule({
     providers: [
-      AchevementService,
+      PlanningService,
       {
-        provide: getRepositoryToken(Achevement),
+        provide: getRepositoryToken(Planning),
         useValue: mockRepo,
       },
     ],
   }).compile();
 
-  service = module.get(AchevementService);
+  service = module.get(PlanningService);
 });
 
   // create
 
-  it('should create an achevement', async () => {
-    const achevement = await service.create({
-      achevement_id: 1,
-      achevement_name: 'Test bbb',
-      achevement_date: new Date(),
+  it('should create an planning', async () => {
+    const planning = await service.create({
+      planning_id: 1,
+      planning_name: 'Test bbb',
+      planning_date: new Date(),
     });
 
-    expect(achevement.achevement_id).toBeDefined();
+    expect(planning.planning_id).toBeDefined();
   });
 
  it('should throw when duplicate entry', async () => {
   mockRepo.findOne.mockResolvedValue({
-    achevement_id: 1,
-    achevement_name: 'Test bbb',
-    achevement_date: new Date(),
+    planning_id: 1,
+    planning_name: 'Test bbb',
+    planning_date: new Date(),
   });
 
   await expect(
     service.create({
-      achevement_id: 1,
-      achevement_name: 'Test bbb',
-      achevement_date: new Date(),
+      planning_id: 1,
+      planning_name: 'Test bbb',
+      planning_date: new Date(),
     })
   ).rejects.toThrow('Duplicate entry');
 });
@@ -75,13 +76,13 @@ beforeEach(async () => {
 
   // findAll 
 
-  it("should find all achevement", async () => {
-    const achevements = await service.findAll()
-    await expect(achevements).toEqual([
+  it("should find all planning", async () => {
+    const plannings = await service.findAll()
+    await expect(plannings).toEqual([
       {
-        achevement_id: 1,
-        achevement_name: 'Test bbb',
-        achevement_date: expect.any(Date),
+        planning_id: 1,
+        planning_name: 'Test bbb',
+        planning_date: expect.any(Date),
       },
     ]);
   });
@@ -93,26 +94,26 @@ beforeEach(async () => {
 
   // update
 
-  it("should update the achevement", async () => {
+  it("should update the planning", async () => {
     mockRepo.findOne.mockResolvedValue({
-      achevement_id: 1,
-      achevement_name: 'Test bbb',
-      achevement_date: new Date(),
+      planning_id: 1,
+      planning_name: 'Test bbb',
+      planning_date: new Date(),
     });
-    const achevement = await service.update(1,{
-      achevement_id: 1,
-      achevement_name: 'Test bbb update',
-      achevement_date: new Date(),
+    const planning = await service.update(1,{
+      planning_id: 1,
+      planning_name: 'Test bbb update',
+      planning_date: new Date(),
     })
-    expect(achevement.achevement_id).toEqual(1);
-    expect(achevement.achevement_name).toEqual('Test bbb update')
+    expect(planning.planning_id).toEqual(1);
+    expect(planning.planning_name).toEqual('Test bbb update')
   });
 
-  it("should throw achevement not found", async () => {
+  it("should throw planning not found", async () => {
     mockRepo.findOne.mockResolvedValue(null);
     await expect(
       service.update(1, {
-        achevement_name: 'Updated',
+        planning_name: 'Updated',
       }),
     ).rejects.toThrow('Entity not found');
   });
@@ -121,17 +122,17 @@ beforeEach(async () => {
     mockRepo.findOne
       .mockResolvedValueOnce({
         id: 1,
-        achevement_id: 1,
+        planning_id: 1,
       }) // current entity
 
       .mockResolvedValueOnce({
         id: 2,
-        achevement_id: 2,
+        planning_id: 2,
       }); // duplicate entity
 
     await expect(
       service.update(1, {
-        achevement_id: 2,
+        planning_id: 2,
       }),
     ).rejects.toThrow('Duplicate entry');
   });
@@ -139,16 +140,16 @@ beforeEach(async () => {
   it("should throw an error", async () => {
     mockRepo.save.mockRejectedValue(new Error("DB error"));
     mockRepo.findOne.mockResolvedValue({
-      achevement_id: 1,
-      achevement_name: 'Test bbb',
-      achevement_date: new Date(),
+      planning_id: 1,
+      planning_name: 'Test bbb',
+      planning_date: new Date(),
     });
-    await expect(service.update(1, {achevement_id:1})).rejects.toThrow("DB error")
+    await expect(service.update(1, {planning_id:1})).rejects.toThrow("DB error")
   });
 
   // Delete
 
-  it("should delete achevement", async () => {
+  it("should delete planning", async () => {
     mockRepo.delete.mockResolvedValue({ affected: 1 });
 
     const result = await service.remove(1);
@@ -158,7 +159,7 @@ beforeEach(async () => {
     });
   });
 
-  it("should throw achevement not found", async () => {
+  it("should throw planning not found", async () => {
     mockRepo.delete.mockResolvedValue({ affected: 0 });
 
     await expect(service.remove(1)).rejects.toThrow(

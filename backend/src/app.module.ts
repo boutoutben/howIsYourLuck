@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AchevementController } from './achevement/achevement.controller';
 import { AchevementModule } from './achevement/achevement.module';
+import { PlanningController } from './planning/planning.controller';
+import { PlanningService } from './planning/planning.service';
+import { PlanningModule } from './planning/planning.module';
+import { BaseCrudService } from './common/base-crud/base-crud.service';
 
 @Module({
   imports: [
@@ -19,6 +23,7 @@ import { AchevementModule } from './achevement/achevement.module';
       synchronize: true, // ⚠️ dev only
     }),
     AchevementModule,
+    PlanningModule,
   ],
   controllers: [AppController],
   providers: [AppService],

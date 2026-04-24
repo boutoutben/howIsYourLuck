@@ -1,35 +1,32 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AchevementService } from './achevement.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Achevement } from './achevement.entity';
-import { AchevementController } from './achevement.controller';
+import { PlanningController } from './planning.controller';
+import { PlanningService } from './planning.service';
 
-
-describe('AchevementService', () => {
-  let service: AchevementService;
-
-  const mockService = {
-  create: jest.fn(),
-  findAll: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-};
+describe('PlanningController', () => {
+  let controller: PlanningController;
+  let mockService: any;
 
   beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      controllers: [AchevementController],
+    mockService = {
+      create: jest.fn(),
+      findAll: jest.fn(),
+      update: jest.fn(),
+      remove: jest.fn(),
+    };
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [PlanningController],
       providers: [
         {
-          provide: AchevementService,
-          useValue: mockService,
+          provide: PlanningService,
+          useValue: mockService, // 🔥 THIS FIXES EVERYTHING
         },
       ],
     }).compile();
 
-    controller = module.get(AchevementController);
+    controller = module.get<PlanningController>(PlanningController);
   });
 
- it('should create an achevement', async () => {
+   it('should create an planning', async () => {
     const dto = { name: 'test' };
 
     mockService.create.mockResolvedValue(dto);
@@ -50,33 +47,33 @@ describe('AchevementService', () => {
     expect(result).toEqual(data);
   });
 
-  it('should delete achevement', async () => {
+  it('should delete planning', async () => {
     mockService.remove.mockResolvedValue({
-      message: 'Achevement deleted successfully',
+      message: 'Deleted successfully',
     });
 
     const result = await controller.remove('1');
 
     expect(result).toEqual({
-      message: 'Achevement deleted successfully',
+      message: 'Deleted successfully',
     });
 
     expect(mockService.remove).toHaveBeenCalledWith(1);
   });
 
-  it('should update achevement', async () => {
-    const dto = { achevement_name: 'Updated' };
+  it('should update planning', async () => {
+    const dto = { planning_name: 'Updated' };
 
     mockService.update.mockResolvedValue({
       id: 1,
-      achevement_name: 'Updated',
+      planning_name: 'Updated',
     });
 
     const result = await controller.update('1', dto);
 
     expect(result).toEqual({
       id: 1,
-      achevement_name: 'Updated',
+      planning_name: 'Updated',
     });
 
     expect(mockService.update).toHaveBeenCalledWith(1, dto);
