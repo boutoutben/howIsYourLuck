@@ -8,6 +8,7 @@ import { PlanningController } from './planning/planning.controller';
 import { PlanningService } from './planning/planning.service';
 import { PlanningModule } from './planning/planning.module';
 import { BaseCrudService } from './common/base-crud/base-crud.service';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { BaseCrudService } from './common/base-crud/base-crud.service';
     }),
     AchevementModule,
     PlanningModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],
