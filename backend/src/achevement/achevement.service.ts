@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { Achevement } from "./achevement.entity";
-// ✅ works everywhere
 import { BaseCrudService } from "../common/base-crud/base-crud.service";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";

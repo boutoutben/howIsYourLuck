@@ -17,6 +17,8 @@ CREATE TABLE app_user (
     email VARCHAR(100) NOT NULL
         CHECK (char_length(email) BETWEEN 3 AND 100),
 
+    user_password VARCHAR(100) NOT NULL,
+
     phone VARCHAR(10) NOT NULL,
 
     passions VARCHAR[]

@@ -5,37 +5,37 @@ import { Achevement } from './achevement.entity';
 
 
 describe('AchevementService', () => {
-let mockRepo;
+  let mockRepo;
 
-beforeEach(async () => {
-  jest.resetAllMocks();
+  beforeEach(async () => {
+    jest.resetAllMocks();
 
-  mockRepo = {
-    create: jest.fn((dto) => dto),
-    save: jest.fn((entity) => ({ ...entity })),
-    findOne: jest.fn(),
-    find: jest.fn().mockResolvedValue([
-      {
-        achevement_id: 1,
-        achevement_name: 'Test bbb',
-        achevement_date: new Date(),
-      },
-    ]),
-    delete: jest.fn(),
-  };
+    mockRepo = {
+      create: jest.fn((dto) => dto),
+      save: jest.fn((entity) => ({ ...entity })),
+      findOne: jest.fn(),
+      find: jest.fn().mockResolvedValue([
+        {
+          achevement_id: 1,
+          achevement_name: 'Test bbb',
+          achevement_date: new Date(),
+        },
+      ]),
+      delete: jest.fn(),
+    };
 
-  const module: TestingModule = await Test.createTestingModule({
-    providers: [
-      AchevementService,
-      {
-        provide: getRepositoryToken(Achevement),
-        useValue: mockRepo,
-      },
-    ],
-  }).compile();
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        AchevementService,
+        {
+          provide: getRepositoryToken(Achevement),
+          useValue: mockRepo,
+        },
+      ],
+    }).compile();
 
-  service = module.get(AchevementService);
-});
+    service = module.get(AchevementService);
+  });
 
   // create
 

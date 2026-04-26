@@ -9,6 +9,9 @@ import { PlanningService } from './planning/planning.service';
 import { PlanningModule } from './planning/planning.module';
 import { BaseCrudService } from './common/base-crud/base-crud.service';
 import { ContactModule } from './contact/contact.module';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +29,7 @@ import { ContactModule } from './contact/contact.module';
     AchevementModule,
     PlanningModule,
     ContactModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
