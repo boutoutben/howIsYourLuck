@@ -10,6 +10,7 @@ describe('PlanningController', () => {
     mockService = {
       create: jest.fn(),
       findAll: jest.fn(),
+      check: jest.fn(),
       update: jest.fn(),
       remove: jest.fn(),
     };
@@ -77,5 +78,20 @@ describe('PlanningController', () => {
     });
 
     expect(mockService.update).toHaveBeenCalledWith(1, dto);
+  });
+
+  it("should check planning", async () => {
+    mockService.check.mockResolvedValue({
+      planning_id: 1,
+      planning_check: true,
+    });
+
+    const result = await controller.check("1");
+
+    expect(mockService.check).toHaveBeenCalledWith(1); // ✅ important
+    expect(result).toEqual({
+      planning_id: 1,
+      planning_check: true,
+    });
   });
 });

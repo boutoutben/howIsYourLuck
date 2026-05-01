@@ -29,4 +29,9 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.UserService.remove(Number(id));
   }
+
+  @Put('score/:id')
+  updateSocre(@Param('id') id: string) {
+    return this.UserService.updateScore(Number(id));
+  }
 }

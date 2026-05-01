@@ -22,7 +22,10 @@ CREATE TABLE app_user (
     phone VARCHAR(10) NOT NULL,
 
     passions VARCHAR[]
-        CHECK (passions IS NULL OR array_length(passions, 1) < 5)
+        CHECK (passions IS NULL OR array_length(passions, 1) < 5),
+    
+    user_score INT NOT NULL DEFAULT 0 CHECK(user_score >= 0),
+    last_increase DATE  CHECK(last_increase <= CURRENT_DATE)
 );
 
 CREATE TABLE achevement (

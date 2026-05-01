@@ -29,4 +29,9 @@ export class PlanningController {
   remove(@Param('id') id: string) {
     return this.PlanningService.remove(Number(id));
   }
+
+  @Put("check/:id")
+  check(@Param('id') id: string) {
+    return this.PlanningService.check(Number(id));
+  }
 }

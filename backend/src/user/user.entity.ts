@@ -25,4 +25,10 @@ export class User {
 
     @Column("text", { array: true, default: [] })
     passions!: string[];
+
+    @Column({ default: 0 })
+    user_score!: number;
+
+    @Column({nullable: true})
+    last_increase!: Date;
 }

@@ -23,6 +23,7 @@ beforeEach(async () => {
       },
     ]),
     delete: jest.fn(),
+    check: jest.fn()
   };
 
   const module: TestingModule = await Test.createTestingModule({
@@ -171,6 +172,45 @@ beforeEach(async () => {
     mockRepo.delete.mockRejectedValue(new Error("DB error"));
 
     await expect(service.remove(1)).rejects.toThrow("DB error");
-  })
+  });
+
+  //check
+
+  it("should check planning", async () => {
+      mockRepo.findOne.mockResolvedValue({
+      planning_id: 1,
+      planning_name: 'Test bbb',
+      planning_date: new Date(),
+      planning_check:false
+    });
+
+    const result = await service.check(1);
+
+    expect(result).toEqual({
+        planning_id: 1,
+        planning_name: 'Test bbb',
+        planning_date: new Date(),
+        planning_check:true
+    })
+  });
+
+  it("should thow Entity not found", async () => {
+    mockRepo.findOne.mockResolvedValue(null);
+
+    await expect(service.check(1)).rejects.toThrow("Entity not found")
+  });
+
+  it("should throw an error", async () => {
+      mockRepo.findOne.mockResolvedValue({
+        planning_id: 1,
+        planning_name: 'Test bbb',
+        planning_date: new Date(),
+        planning_check: false
+      });
+
+      mockRepo.save.mockRejectedValue(new Error("Db error"));
+
+      await expect(service.check(1)).rejects.toThrow("Db error");
+  });
 
 });
