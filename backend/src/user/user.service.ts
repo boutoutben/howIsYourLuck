@@ -56,6 +56,7 @@ export class UserService extends BaseCrudService<User> {
             }
             user.last_increase = new Date(); 
             await this.repo.save(user);  
+            return user;
         } catch(error) {
             throw error;
         }

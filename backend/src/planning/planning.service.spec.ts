@@ -177,10 +177,11 @@ beforeEach(async () => {
   //check
 
   it("should check planning", async () => {
+    const today = new Date();
       mockRepo.findOne.mockResolvedValue({
       planning_id: 1,
       planning_name: 'Test bbb',
-      planning_date: new Date(),
+      planning_date: today,
       planning_check:false
     });
 
@@ -189,7 +190,7 @@ beforeEach(async () => {
     expect(result).toEqual({
         planning_id: 1,
         planning_name: 'Test bbb',
-        planning_date: new Date(),
+        planning_date: today,
         planning_check:true
     })
   });

@@ -23,7 +23,9 @@ describe('UserService', () => {
           "email": "Juliette@gmail.com",
           "user_password": "test",
           "phone":"0656666769",
-          "passions": ["Animaux"]
+          "passions": ["Animaux"],
+          "user_score": 1,
+          "last_inscrease": null
         },
       ]),
       delete: jest.fn(),
@@ -106,7 +108,9 @@ describe('UserService', () => {
         "email": "Juliette@gmail.com",
         "user_password": "test",
         "phone":"0656666769",
-        "passions": ["Animaux"]
+        "passions": ["Animaux"],
+        "user_score": 1,
+        "last_inscrease": null
       },
     ]);
   });
@@ -211,4 +215,105 @@ describe('UserService', () => {
 
     await expect(service.remove(1)).rejects.toThrow("DB error");
   });
+
+  //update score 
+
+  it("should update the score", async () => {
+    const today = new Date();
+    const yesterday = today.setDate(today.getDate() - 1)
+    mockRepo.findOne.mockResolvedValue({
+      "user_id": 1,
+      "user_lastname": "Morrez-facq",
+      "user_firstname":"Juliette",
+      "birth_day": "2008-01-08",
+      "email": "Juliette@gmail.com",
+      "user_password": "test",
+      "phone":"0656666769",
+      "passions": ["Animaux"],
+      "user_score": 1,
+      "last_increase": yesterday
+    });
+
+
+    const result = await service.updateScore(1);
+
+    today.setDate(today.getDate() + 1);
+
+    expect(result.user_score).toEqual(2);
+    expect(result.last_increase.getFullYear()).toEqual(today.getFullYear());
+    expect(result.last_increase.getMonth()).toEqual(today.getMonth());
+    expect(result.last_increase.getDate()).toEqual(today.getDate());
+  });
+
+  it("should reset the score", async () => {
+     const today = new Date();
+    const threeLaster = today.setDate(today.getDate() - 3)
+    mockRepo.findOne.mockResolvedValue({
+      "user_id": 1,
+      "user_lastname": "Morrez-facq",
+      "user_firstname":"Juliette",
+      "birth_day": "2008-01-08",
+      "email": "Juliette@gmail.com",
+      "user_password": "test",
+      "phone":"0656666769",
+      "passions": ["Animaux"],
+      "user_score": 5,
+      "last_increase": threeLaster
+    });
+
+
+    const result = await service.updateScore(1);
+
+    today.setDate(today.getDate() + 3);
+
+    expect(result.user_score).toEqual(1);
+    expect(result.last_increase.getFullYear()).toEqual(today.getFullYear());
+    expect(result.last_increase.getMonth()).toEqual(today.getMonth());
+    expect(result.last_increase.getDate()).toEqual(today.getDate());
+  });
+  it("should throw entity not found", async () => {
+    mockRepo.findOne(null);
+    await expect(service.updateScore(1)).rejects.toThrow("Entity not found");
+  });
+  
+  it("should throw score already update", async () => {
+     const today = new Date();
+    mockRepo.findOne.mockResolvedValue({
+      "user_id": 1,
+      "user_lastname": "Morrez-facq",
+      "user_firstname":"Juliette",
+      "birth_day": "2008-01-08",
+      "email": "Juliette@gmail.com",
+      "user_password": "test",
+      "phone":"0656666769",
+      "passions": ["Animaux"],
+      "user_score": 5,
+      "last_increase": today
+    });
+
+    await expect(service.updateScore(1)).rejects.toThrow("Score already update");
+  });
+
+  it("should throw error", async () => {
+    const today = new Date();
+    const yesterday = today.setDate(today.getDate() - 1)
+    mockRepo.save.mockRejectedValue(new Error("DB error"));
+
+        mockRepo.findOne.mockResolvedValue({
+      "user_id": 1,
+      "user_lastname": "Morrez-facq",
+      "user_firstname":"Juliette",
+      "birth_day": "2008-01-08",
+      "email": "Juliette@gmail.com",
+      "user_password": "test",
+      "phone":"0656666769",
+      "passions": ["Animaux"],
+      "user_score": 5,
+      "last_increase": yesterday
+    });
+
+    today.setDate(today.getDate() + 1);
+
+    await expect(service.updateScore(1)).rejects.toThrow("DB error");
+  })
 });
