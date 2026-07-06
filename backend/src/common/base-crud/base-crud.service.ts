@@ -1,33 +1,29 @@
-import { DeepPartial, ObjectLiteral, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsOrder, ObjectLiteral, Repository } from 'typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 
 export class BaseCrudService<T extends ObjectLiteral> {
   constructor(
     protected readonly repo: Repository<T>,
     protected readonly idField: keyof T,
+    protected readonly dateField: string,
   ) {}
 
   async create(data: DeepPartial<T>) {
-  const entity = this.repo.create(data);
-
-  const idValue = (entity as any)[this.idField];
-
-  if (idValue) {
-    const existing = await this.repo.findOne({
-      where: { [this.idField]: idValue } as any,
-    });
-
-    if (existing) {
-      throw new ConflictException('Duplicate entry');
-    }
-  }
-
-  return this.repo.save(entity);
+  return this.repo.save(data);
 }
 
-  async findAll() {
+ async findAll() {
+  if(this.dateField != '') {
+    return this.repo.find({
+    order: {
+      [this.dateField]: 'DESC',
+    } as FindOptionsOrder<T>,
+  });
+  } else {
     return this.repo.find();
   }
+  
+}
 
   async update(id: number, data: Partial<T>) {
     const entity = await this.repo.findOne({

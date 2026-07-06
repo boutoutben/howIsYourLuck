@@ -10,6 +10,6 @@ export class AchevementService extends BaseCrudService<Achevement> {
     @InjectRepository(Achevement)
     repo: Repository<Achevement>,
   ) {
-    super(repo, 'achevement_id');
+    super(repo, 'achevement_id','achevement_date');
   }
 }

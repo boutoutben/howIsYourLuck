@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
@@ -7,7 +7,7 @@ export default function Header({ count = 0 }) {
   return (
     <View style={styles.header}>
       <Image
-        source={require('@/assets/icons/howIsYoursLuckLogo.svg')} 
+        source={require('@/assets/icons/howIsYoursLuckLogo.png')} 
         style={styles.logo}
       />
 
@@ -25,11 +25,20 @@ export default function Header({ count = 0 }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection:'row',
-    alignItems:"center",
-    justifyContent:"space-between"
-  },
+ header: {
+  position: "fixed",
+  top: 50,
+  left: 0,
+  right: 0,
+  zIndex: 1000,
+  backgroundColor: "#2F8F5B",
+  width:"100%",
+  paddingHorizontal:20,
+  paddingVertical:25,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
 
 
   count: {

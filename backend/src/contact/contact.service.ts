@@ -10,6 +10,6 @@ export class ContactService extends BaseCrudService<Contact> {
     @InjectRepository(Contact)
     repo: Repository<Contact>,
   ) {
-    super(repo, 'contact_id');
+    super(repo, 'contact_id','');
   }
 }

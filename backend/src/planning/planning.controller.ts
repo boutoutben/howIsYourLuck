@@ -17,6 +17,11 @@ export class PlanningController {
     return this.PlanningService.findAll();
   }
 
+  @Get(':date')
+  findByDate(@Param('date') date: Date) {
+    return this.PlanningService.findByDate(date);
+  }
+
   @Put(':id')
   update(
     @Param('id') id: string,

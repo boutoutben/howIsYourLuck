@@ -10,73 +10,169 @@ import Header from '@/components/header';
 import AchementElement from '@/components/AchementElement';
 import PersonElement from '@/components/PersonElement';
 import PlanningElement from '@/components/PlanningElement';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppButton from '@/components/AppButton';
+import axios from 'axios';
 
 
 
 
 export default function HomeScreen() {
   const navigate = useNavigation();
+
   const [textHover, setTextHover] = useState(false);
+  const [achevements, setAchevements] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [contacts, setContact] = useState([]);
+
+  const loadAchevements = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://192.168.1.91:3000/achevement"
+      );
+
+      setAchevements(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+ const loadActivity = async (date) => {
+    try {
+      const { data } = await axios.get(
+        "http://192.168.1.91:3000/planning/" + date.toISOString()
+      );
+      setActivities(data);
+      console.log(data)
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+   const loadContact = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://192.168.1.91:3000/contact"
+      );
+
+      setContact(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log("cc");
+    loadAchevements();
+    loadActivity(new Date());
+    loadContact();
+  }, []);
+
   return (
-   // 
-    <ScrollView  >  
-      <ThemedView style={styles.home}>
-
-      
-      <Header/>
-        <View style={styles.titleContainer}>
-          <ThemedText style={[styles.title, styles.white]}>Bienvenue Juliette!</ThemedText>
+    <View>
+      <View style={styles.header}>
+          <Header />
         </View>
-        <View style={styles.container}>
-            <ThemedText style={[styles.subtitle, styles.white]}>Tes Accomplissements</ThemedText>
-            <View style={[styles.items]}>   
-              <AchementElement text={"J'ai réussi à sortir de la maison pour aller marcher"} date={"08/04/2026"}  editable={false} />
-              <AchementElement text={"J'ai eu une bonne note en maths"} date={"02/03/2026"} editable={false} />
-          </View>
-          <View style={styles.btnContainer}>
-            <AppButton title={"Ajouter un accomplissement"} onPress={() => navigate.navigate("achevement")}/>
-          </View>
+      <ScrollView contentContainerStyle={{ paddingTop: 160 }}>
+        <ThemedView style={styles.home}>
           
-        </View>
-        <View style={styles.container}>
-          <View style={styles.row}>
-            <ThemedText style={[styles.subtitle,styles.white]}>Planning</ThemedText>
-            <ThemedText
-            onMouseEnter={() => setTextHover(true)}
-            onMouseLeave={() => setTextHover(false)}
-            onPress={() => navigate.navigate('planning')}
-            style={[
-              styles.text,
-              styles.white,
-              textHover && styles.textHover,
-            ]}
-          >
-            Aujourd'hui
-          </ThemedText>
-          </View>
-          <View style={styles.items}>
-            <PlanningElement text={"Faire les courses à LIDL"} editable={false} />
-            <PlanningElement text={"Réviser mon code"} editable={false} />
-          </View>
-        </View >
 
-
-
-        <View style={styles.container}>
-          <ThemedText style={[styles.subtitle, styles.white]}>A qui parler</ThemedText>
-          <View style={[styles.items]}>   
-          <PersonElement img={"benjamin"} nom={"Boutout"} prenom={"Benjamin"} statue={"Copain"} />
-          <PersonElement img={"benjamin"} nom={"Facq"} prenom={"Cassandre"} statue={"Mère"} />
-          
+          <View style={styles.titleContainer}>
+            <ThemedText style={[styles.title, styles.white]}>
+              Bienvenue Juliette!
+            </ThemedText>
           </View>
-          <View style={styles.btnContainer}>
-            <AppButton title={"Ajouter un contact"} onPress={() => navigate.navigate("contact")} />
+
+          {/* ACHIEVEMENTS */}
+          <View style={styles.container}>
+            <ThemedText style={[styles.subtitle, styles.white]}>
+              Tes Accomplissements
+            </ThemedText>
+            {achevements.length > 0 ? (
+              achevements.map((ach) => (
+                <AchementElement
+                  key={ach.achevement_id}
+                  text={ach.achevement_name}
+                  date={new Date(ach.achevement_date).toLocaleDateString("fr-FR")}
+                  editable={false}
+                />
+              ))
+            ) : (
+              <ThemedText style={{ color: "#fff" }}>
+                Aucun accomplissement
+              </ThemedText>
+            )}
+            <View style={styles.items}>
+              
+            </View>
+            <View style={styles.btnContainer}>
+              <AppButton title={"Ajouter un accomplissement"} onPress={() => navigate.navigate("achevement")}/>
+            </View>
           </View>
-        </View>
+
+          {/* PLANNING */}
+          <View style={styles.container}>
+            <View style={styles.row}>
+              <ThemedText style={[styles.subtitle, styles.white]}>
+                Planning
+              </ThemedText>
+
+              <ThemedText
+                onPress={() => navigate.navigate("planning")}
+                style={[styles.text, styles.white, textHover && styles.textHover]}
+              >
+                Aujourd'hui
+              </ThemedText>
+            </View>
+
+            <View style={styles.items}>
+              {activities.length > 0 ? (
+                activities.map((act) => (
+                  <PlanningElement
+                    key={act.planning_id}
+                    text={act.planning_name}
+                    editable={false}
+                  />
+                ))
+              ) : (
+                <ThemedText style={{ color: "#fff" }}>
+                  Aucun planning aujourd’hui
+                </ThemedText>
+              )}
+            </View>
+          </View>
+
+          {/* CONTACT */}
+          <View style={styles.container}>
+            <ThemedText style={[styles.subtitle, styles.white]}>
+              A qui parler
+            </ThemedText>
+            <View>
+            {contacts?.length > 0 ? (
+              contacts.map((con) => (
+                <PersonElement
+                  key={con.contact_id}
+                  img={`http://192.168.1.91:3000/uploads/${con.contact_img}`}
+                  nom={con.contact_name}
+                  statue={con.contact_role}
+                />
+              ))
+            ) : (
+              <ThemedText style={{ color: "#fff" }}>
+                Aucun contact
+              </ThemedText>
+            )}
+            </View>
+            <View style={styles.btnContainer}>
+              <AppButton
+                title={"Ajouter un contact"}
+                onPress={() => navigate.navigate("contact")}
+              />
+            </View>
+          </View>
         </ThemedView>
-      </ScrollView >
+      </ScrollView>
+    </View>
   );
 }
 
@@ -84,15 +180,23 @@ const styles = StyleSheet.create({
   home: {
     backgroundColor: "#2F8F5B",
     margin: 0,
-    paddingVertical: 40,
+    paddingVertical: 30,
     paddingHorizontal: "5%",
     gap: 25,
+    paddingTop:0
   },
-  header: {
-    flexDirection:'row',
-    alignItems:"center",
-    justifyContent:"space-between"
-  },
+ header: {
+  position: "absolute",
+  backgroundColor: "#2F8F5B",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1000,
+  elevation: 1000, // important sur Android
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
   container: {
     gap: 30,
   },

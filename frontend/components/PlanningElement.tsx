@@ -1,12 +1,17 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "./themed-text";
 import { Image } from "expo-image";
 
-export default function PlanningElement({text,editable}) {
+export default function PlanningElement({text,editable, onclick}) {
     return (
         <View style={styles.row}>
              <ThemedText style={[styles.task, styles.white,styles.text]}>{text}</ThemedText>
-            {editable && (<Image source={require("@/assets/icons/check.svg")} style={styles.img} />)}
+            {editable && ( 
+              <Pressable onPress={onclick}>
+                 <Image source={require("@/assets/icons/check.svg")} style={styles.img} />
+            </Pressable>
+            )}
+             
         </View>
        
     )

@@ -2,18 +2,18 @@ import { Image } from "expo-image";
 import { ThemedText } from "./themed-text";
 import { View,StyleSheet } from "react-native";
 
-export default function PersonElement({prenom,nom,statue,img}) {
-    const images = {
-        benjamin: require('@/assets/images/benjaminPhoto.jpg'),
-        };
+export default function PersonElement({nom,statue,img}) {
+    console.log("IMG =", img);
     return (
         <View style={[styles.person,styles.textImg]}>
              <Image
-                source={images[img]}
-                style={styles.personImg}
+              source={{ uri: img }}
+              style={styles.personImg}
+              onLoad={() => console.log("Image chargée")}
+              onError={(e) => console.log("Erreur :", e)}
             />
             <View style={styles.personText}>
-                <ThemedText style={[styles.text,styles.white]}>{prenom} {nom}</ThemedText>
+                <ThemedText style={[styles.text,styles.white]}> {nom}</ThemedText>
                 <ThemedText style={[styles.text,styles.white]}>{statue}</ThemedText>
             </View>
         </View> 

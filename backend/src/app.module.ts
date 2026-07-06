@@ -12,6 +12,7 @@ import { ContactModule } from './contact/contact.module';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
+import { UploadModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserModule } from './user/user.module';
     PlanningModule,
     ContactModule,
     UserModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

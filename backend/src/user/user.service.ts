@@ -18,7 +18,7 @@ export class UserService extends BaseCrudService<User> {
         @InjectRepository(User)
         repo: Repository<User>
     ) {
-        super(repo, 'user_id')
+        super(repo, 'user_id','')
     }
 
     async updateScore(id: number) {

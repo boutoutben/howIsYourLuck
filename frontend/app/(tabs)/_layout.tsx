@@ -11,6 +11,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+
   return (
     <Tabs
       screenOptions={{
@@ -19,10 +20,11 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor:"#2F8F5B",
-          height:100
+          height:150,
         },
         tabBarItemStyle: {
-          paddingVertical: 30,
+          paddingVertical: 50,
+          
         }
       }}>
      <Tabs.Screen
