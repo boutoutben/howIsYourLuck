@@ -20,9 +20,9 @@ import { UploadModule } from './uploads/uploads.module';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'postgres',
+      username: 'boutoutben',
       password: "Cpvupvu123!",
-      database: 'how_is_your_luck',
+      database: 'howisyourluck',
       autoLoadEntities: true,
       logging: true,
       synchronize: true, // ⚠️ dev only

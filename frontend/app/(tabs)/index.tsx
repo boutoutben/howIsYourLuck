@@ -5,7 +5,7 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link, useNavigation } from 'expo-router';
+import { Link, Redirect, useNavigation } from 'expo-router';
 import Header from '@/components/header';
 import AchementElement from '@/components/AchementElement';
 import PersonElement from '@/components/PersonElement';
@@ -13,8 +13,6 @@ import PlanningElement from '@/components/PlanningElement';
 import { useEffect, useState } from 'react';
 import AppButton from '@/components/AppButton';
 import axios from 'axios';
-
-
 
 
 export default function HomeScreen() {
