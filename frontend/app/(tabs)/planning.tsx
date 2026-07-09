@@ -20,7 +20,6 @@ import { ThemedView } from "@/components/themed-view";
 import AppButton from "@/components/AppButton";
 import { Text } from "@react-navigation/elements";
 import { Calendar } from 'react-native-calendars';
-import "react-datepicker/dist/react-datepicker.css";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 function generateCalendar(year, month) {
@@ -87,7 +86,7 @@ export default function TabTwoScreen() {
   const checkActivity = async (id) => {
     try {
       await axios.put(
-        "http://192.168.1.91:3000/planning/check/" + id
+        `${process.env.EXPO_PUBLIC_API_URL}/planning/check/${id}`
       );
 
       await loadActivity(selectedDate);
@@ -110,7 +109,7 @@ export default function TabTwoScreen() {
   const loadActivity = async (date) => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/planning/" + date.toISOString()
+        `${process.env.EXPO_PUBLIC_API_URL}/planning/${date.toISOString()}`
       );
       setActivities(data);
     } catch (e) {
@@ -136,7 +135,7 @@ export default function TabTwoScreen() {
 
     try {
       await axios.post(
-        "http://192.168.1.91:3000/planning",
+        `${process.env.EXPO_PUBLIC_API_URL}/planning`,
         {
           planning_name: data.activity,
           planning_date: data.date,
@@ -158,7 +157,7 @@ export default function TabTwoScreen() {
       <View style={styles.header}>
           <Header />
         </View>
-      <ScrollView  contentContainerStyle={{ paddingTop: 160 }}>
+      <ScrollView  contentContainerStyle={{ paddingTop: 130 }}>
         <ThemedView style={styles.home}>
           <ThemedText style={[styles.title, styles.white]}>
             Mon calendrier
@@ -370,7 +369,7 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingHorizontal: "5%",
     gap: 25,
-    minHeight: height - 100,
+    minHeight: height - 175,
   },
    header: {
     position: "absolute",

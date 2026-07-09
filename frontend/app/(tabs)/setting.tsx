@@ -17,7 +17,7 @@ export default function TabTwoScreen() {
       <View style={styles.header}>
                 <Header />
               </View>
-      <ScrollView  contentContainerStyle={{ paddingTop: 160 }}>
+      <ScrollView  contentContainerStyle={{ paddingTop: 130 }}>
         <ThemedView style={styles.home}>
           <View style={styles.row}>
             <ThemedText style={[styles.title,styles.white]}>Paramètre</ThemedText>
@@ -30,7 +30,7 @@ export default function TabTwoScreen() {
               <SettingAttr name={"Nom"} value={"Morrez-facq"} />
               <SettingAttr name={"Prenom"} value={"Juliette"} />
               <SettingAttr name={"Date de naissance"} value={"08/01/2008"} />
-              <SettingAttr name={"Email"} value={"juliette.morez@gmail.com"} />
+              <SettingAttr name={"Email"} value={"juliette.morrez@gmail.com"} />
               <SettingAttr name={"Téléphone"} value={"06 56 66 67 69"} />
               <SettingAttr name={"Passions"} value={"Animaux"} />
             </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingHorizontal: "5%",
     gap: 35,
-    minHeight:height-100
+    minHeight:height-175
   },
    btnContainer: {
     alignItems:"flex-end"

@@ -26,7 +26,7 @@ export default function HomeScreen() {
   const loadAchevements = async () => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/achevement"
+        `${process.env.EXPO_PUBLIC_API_URL}/achevement`
       );
 
       setAchevements(data);
@@ -38,7 +38,7 @@ export default function HomeScreen() {
  const loadActivity = async (date) => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/planning/" + date.toISOString()
+        `${process.env.EXPO_PUBLIC_API_URL}/planning/${date.toISOString()}`
       );
       setActivities(data);
       console.log(data)
@@ -50,7 +50,7 @@ export default function HomeScreen() {
    const loadContact = async () => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/contact"
+        `${process.env.EXPO_PUBLIC_API_URL}/contact`
       );
 
       setContact(data);
@@ -60,7 +60,7 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    console.log("cc");
+    console.log("URL: " + process.env.EXPO_PUBLIC_API_URL);
     loadAchevements();
     loadActivity(new Date());
     loadContact();
@@ -71,7 +71,7 @@ export default function HomeScreen() {
       <View style={styles.header}>
           <Header />
         </View>
-      <ScrollView contentContainerStyle={{ paddingTop: 160 }}>
+      <ScrollView contentContainerStyle={{ paddingTop: 130 }}>
         <ThemedView style={styles.home}>
           
 
@@ -130,6 +130,7 @@ export default function HomeScreen() {
                     key={act.planning_id}
                     text={act.planning_name}
                     editable={false}
+                    onclick={null}
                   />
                 ))
               ) : (
@@ -145,12 +146,12 @@ export default function HomeScreen() {
             <ThemedText style={[styles.subtitle, styles.white]}>
               A qui parler
             </ThemedText>
-            <View>
+            <View style={styles.items}>
             {contacts?.length > 0 ? (
               contacts.map((con) => (
                 <PersonElement
                   key={con.contact_id}
-                  img={`http://192.168.1.91:3000/uploads/${con.contact_img}`}
+                  img={`${process.env.EXPO_PUBLIC_API_URL}/uploads/${con.contact_img}`}
                   nom={con.contact_name}
                   statue={con.contact_role}
                 />
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: "5%",
     gap: 25,
-    paddingTop:0
+    paddingTop:20
   },
  header: {
   position: "absolute",

@@ -4,14 +4,18 @@ import Header from '@/components/header';
 import AppButton from '@/components/AppButton';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 
 export default function TabTwoScreen() {
   const router = useRouter();
+  const navigate = useNavigation();
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+     <View>
+          <View style={styles.header}>
+              <Header />
+            </View>
+    <ScrollView contentContainerStyle={{ paddingTop: 130 }}>
       <ThemedView style={styles.home}>
-        <Header />
 
         <ThemedText style={[styles.title, styles.white]}>
           Connection
@@ -42,32 +46,48 @@ export default function TabTwoScreen() {
           </View>
         </View>
 
-        <View style={styles.btnContainer}>
+        <View>
           <AppButton
             title="Se connecter"
-            onPress={() => alert('Connexion')}
+            onPress={() => router.push("/(tabs)")}
           />
+        </View>
+        <View>
           <AppButton
             title="Créer un compte"
-            onPress={() => router.push("/(auth)/signup")}
+            onPress={() => router.push("/(auths)/signup")}
           />
         </View>
       </ThemedView>
     </ScrollView>
+    </View>
   );
 }
 
 const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  home: {
-    backgroundColor: '#2F8F5B',
-    paddingVertical: 40,
-    paddingHorizontal: '5%',
-    gap: 35,
-    minHeight: height - 100,
+     home: {
+    backgroundColor: "#2F8F5B",
+    margin: 0,
+    paddingVertical: 30,
+    paddingHorizontal: "5%",
+    gap: 25,
+    paddingTop:30,
+    minHeight:height-100
   },
-
+ header: {
+  position: "absolute",
+  backgroundColor: "#2F8F5B",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1000,
+  elevation: 1000, // important sur Android
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
   title: {
     fontSize: 32,
     fontWeight: 'bold',
@@ -98,7 +118,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  btnContainer: {
-    alignItems: 'center',
-  },
+
 });

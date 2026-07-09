@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('app_user')
 export class User {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     user_id!: number;
 
     @Column()
@@ -20,8 +20,11 @@ export class User {
     @Column()
     user_password!: string;
 
-    @Column()
-    phone!: string;
+    @Column({
+  type: 'varchar',
+  nullable: true,
+})
+phone?: string;
 
     @Column("text", { array: true, default: [] })
     passions!: string[];

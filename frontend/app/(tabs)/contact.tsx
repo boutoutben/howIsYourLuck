@@ -54,46 +54,62 @@ export default function TabTwoScreen() {
     try {
       let filename = null;
 
-      const formData = new FormData();
-      if(image.name == null || image.uri == null) {
+      if (!image) {
         return;
       }
-      const response = await fetch(image?.uri);
-      const blob = await response.blob();
 
-      formData.append("file", blob, image?.name);
+      const formData = new FormData();
+
+      formData.append("file", {
+        uri: image.uri,
+        name: image.name,
+        type: "image/jpeg",
+      } as any);
 
       const uploadResponse = await axios.post(
-        "http://192.168.1.91:3000/upload",
-        formData
+        `${process.env.EXPO_PUBLIC_API_URL}/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       filename = uploadResponse.data.filename;
 
-
-
-       await axios.post(
-        "http://192.168.1.91:3000/contact",
+      await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/contact`,
         {
           contact_name: data.prenom + " " + data.nom,
           contact_role: data.roles,
-          contact_img: filename
+          contact_img: filename,
         }
       );
 
-      
       setVisible(false);
 
+      setData({
+        nom: "",
+        prenom:"",
+        roles:"",
+        img:""
+      })
+
       await loadContact();
-    } catch (error) {
-      console.log("API ERROR:", error);
+
+    } catch (error: any) {
+      console.log(
+        "API ERROR:",
+        error.response?.data ?? error.message
+      );
     }
   };
 
     const loadContact = async () => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/contact"
+        `${process.env.EXPO_PUBLIC_API_URL}/contact`
       );
 
       setContact(data);
@@ -103,6 +119,7 @@ export default function TabTwoScreen() {
   };
 
    useEffect(() => {
+    console.log("API:", process.env.EXPO_PUBLIC_API_URL);
       loadContact();
     }, []);
 
@@ -111,7 +128,7 @@ export default function TabTwoScreen() {
       <View style={styles.header}>
                 <Header />
               </View>
-      <ScrollView contentContainerStyle={{ paddingTop: 160 }}>
+      <ScrollView contentContainerStyle={{ paddingTop: 130 }}>
           <ThemedView style={styles.home}>
             
               <ThemedText style={[styles.title, styles.white]}>Qui contacter</ThemedText>
@@ -121,7 +138,8 @@ export default function TabTwoScreen() {
               <View style={styles.items}>
                 {contact.map((item) => (
                   <PersonElement
-                    img={`http://192.168.1.91:3000/uploads/${item.contact_img}`}
+                     key={item.contact_id}
+                    img={`${process.env.EXPO_PUBLIC_API_URL}/uploads/${item.contact_img}`}
                     nom={item.contact_name}
                     statue={item.contact_role}
                   />
@@ -258,7 +276,8 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingHorizontal: "5%",
     gap: 25,
-    minHeight: height - 100,
+    minHeight: height - 175,
+    paddingTop: 30
   },
    btnContainer: {
     alignItems:"flex-end"

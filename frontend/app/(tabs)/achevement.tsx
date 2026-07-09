@@ -26,7 +26,7 @@ export default function TabTwoScreen() {
   const loadAchevements = async () => {
     try {
       const { data } = await axios.get(
-        "http://192.168.1.91:3000/achevement"
+        `${process.env.EXPO_PUBLIC_API_URL}/achevement`
       );
 
       setAchevements(data);
@@ -44,7 +44,7 @@ export default function TabTwoScreen() {
 
     try {
       await axios.post(
-        "http://192.168.1.91:3000/achevement",
+        `${process.env.EXPO_PUBLIC_API_URL}/achevement`,
         {
           achevement_name: data,
           achevement_date: new Date(),
@@ -56,7 +56,7 @@ export default function TabTwoScreen() {
 
       await loadAchevements();
     } catch (error) {
-      console.log("API ERROR:", error);
+      console.log("API ERROR:", error.message);
     }
   };
 
@@ -65,7 +65,7 @@ export default function TabTwoScreen() {
 
     try {
       await axios.put(
-        `http://192.168.1.91:3000/achevement/${selectedId}`,
+        `${process.env.EXPO_PUBLIC_API_URL}/achevement/${selectedId}`,
         {
           achevement_name: data,
         }
@@ -78,7 +78,7 @@ export default function TabTwoScreen() {
 
       await loadAchevements();
     } catch (error) {
-      console.log("API ERROR:", error);
+      console.log("API ERROR:", error.message);
     }
   };
 
@@ -102,7 +102,7 @@ export default function TabTwoScreen() {
           <View style={styles.header}>
               <Header />
             </View>
-        <ScrollView  contentContainerStyle={{ paddingTop: 160 }}>
+        <ScrollView  contentContainerStyle={{ paddingTop: 130 }}>
           <ThemedView style={styles.home}>
             <ThemedText style={[styles.white, styles.title]}>
               Mes accomplissements
@@ -200,7 +200,8 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: "5%",
     gap: 25,
-    paddingTop:0
+    paddingTop:30,
+    minHeight:height-175
   },
  header: {
   position: "absolute",

@@ -20,10 +20,10 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor:"#2F8F5B",
-          height:150,
+          height:80,
         },
         tabBarItemStyle: {
-          paddingVertical: 50,
+          paddingVertical: 20,
           
         }
       }}>
